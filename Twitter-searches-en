@@ -1,0 +1,54 @@
+# Search Twitter using Tweepy
+# This program uses the module Tweepy to search Twitter for tweets with the two given tags.
+
+import tweepy
+import time
+import csv
+
+#authorize
+username = "ordo_rachelis"
+password = "216279Pt"
+consumer_token = "fBrlEc8NbjKChF2f3v3Ku4Lry"
+consumer_sercret = "9T8ockL1NPCMXoETpw3BYuFt3XCbHw152fWAURhVkJJOKYE5Ux"
+
+auth = tweepy.OAuthHandler( consumer_token, consumer_sercret )
+
+access_token = "361372876-jdlRB7agpbEyi3EkuiLecaZml3NsQJTmZaTGql3M"
+access_secret = "KTUBd9Op5N60gLPgxHcuYSFxk5nTIpJBxYQLI5ZFN3FB4"
+
+auth = tweepy.OAuthHandler(consumer_token, consumer_sercret)
+auth.set_access_token(access_token, access_secret)
+api = tweepy.API(auth)
+
+#ask user
+user = str(input("Search: "))
+
+#write into a code
+output = user + "_output_Oct31.csv" #CHANGE
+output_file = open(output, "w")
+csvWriter = csv.writer(output_file)
+
+#search parameters
+startSince = '2015-010-31' #CHANGE
+endUntil = '2015-011-01' #CHANGE
+search1 = "'" + user + "'"
+searchitems = search1 + 'AND "#HurricanePatricia"' #CHANGE
+
+#actually search stuff
+count = 0
+mysearch = tweepy.Cursor(api.search,q=searchitems, since=startSince, until=endUntil, lang="en").items()
+
+while True:    
+    try:
+        tweet = mysearch.next()
+        csvWriter.writerow([tweet.created_at, tweet.text.encode('utf-8')])
+        count +=1
+        
+    except tweepy.TweepError:
+        time.sleep(60 * 15)
+        continue
+    
+    except StopIteration:
+        break
+
+output_file.close()
