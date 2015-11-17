@@ -1,22 +1,31 @@
+#!/usr/bin/python3
 # Search Twitter using Tweepy
 # This program uses the module Tweepy to search Twitter for tweets with the two given tags.
 
 import tweepy
 import time
 import csv
+import configparser
+
+# Location of the config file
+CONFIG_FILE = 'config.ini'
+
+# Read config file
+config = configparser.ConfigParser()
+config.read(CONFIG_FILE)
 
 #authorize
-username = ***
-password = ***
-consumer_token = ***
-consumer_sercret = ***
+username = config['common']['username']
+password = config['common']['password']
+consumer_token = config['common']['consumer_token']
+consumer_secret = config['common']['consumer_secret']
 
-auth = tweepy.OAuthHandler( consumer_token, consumer_sercret )
+auth = tweepy.OAuthHandler( consumer_token, consumer_secret )
 
-access_token = ***
-access_secret = ***
+access_token = config['common']['access_token']
+access_secret = config['common']['access_secret']
 
-auth = tweepy.OAuthHandler(consumer_token, consumer_sercret)
+auth = tweepy.OAuthHandler(consumer_token, consumer_secret)
 auth.set_access_token(access_token, access_secret)
 api = tweepy.API(auth)
 
